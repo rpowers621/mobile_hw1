@@ -4,6 +4,10 @@ import '/driver.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+
+final FirebaseAuth _auth = FirebaseAuth.instance;
+final FirebaseFirestore _db = FirebaseFirestore.instance;
+
 class HomePage extends StatefulWidget {
   HomePage({Key? key}) : super(key: key);
 
@@ -11,9 +15,24 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 class _HomePageState extends State<HomePage> {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+
   List<String> messages =[];
-  Future<void >get onLoad => readMessage(context);
+
+  void readMessage() async {
+    FirebaseFirestore.instance.collection('messages')
+        .get()
+        .then((value) {
+      if (value.size > 0 ) {
+        for (var element in value.docs) {
+          messages.add(element["message"]);
+        }
+      }
+    });
+    setState(() {
+
+    });
+  }
+
 
 
   @override
@@ -55,16 +74,5 @@ class _HomePageState extends State<HomePage> {
         context, MaterialPageRoute(builder: (con) => AppDriver()));
   }
 
-  Future<void> readMessage(BuildContext context) async {
-    await Firebase.initializeApp();
-    FirebaseFirestore.instance.collection('messages')
-        .get()
-        .then((value) {
-      if (value.size > 0 ) {
-        value.docs.forEach((element) {
-          messages.add(element["message"]);
-        });
-      }
-    });
-  }
+
 }

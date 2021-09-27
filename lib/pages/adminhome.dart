@@ -23,9 +23,9 @@ class _AdminHomeState extends State<AdminHome> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("Sign Up For Powers Fan Page"),
+          title: Text("Powers Fan Page"),
           actions: <Widget>[
-            FlatButton(
+           FlatButton(
               onPressed: (){
                 _add(context);
                 },
@@ -83,7 +83,7 @@ class _AdminHomeState extends State<AdminHome> {
               controller: _textFieldController,
               textInputAction: TextInputAction.go,
               keyboardType: TextInputType.multiline,
-              decoration: InputDecoration(hintText: "Enter message"),
+              decoration: const InputDecoration(hintText: "Enter message"),
             ),
             actions: <Widget>[
               OutlinedButton(
@@ -93,7 +93,7 @@ class _AdminHomeState extends State<AdminHome> {
                       Navigator.pop(context);
                     });
                   },
-                   child: Text('Post Message'))
+                   child: const Text('Post Message'))
             ],
           );
         });
@@ -118,9 +118,9 @@ Future<void> addMessageToDB() async {
         .get()
         .then((value) {
       if (value.size > 0 ) {
-        value.docs.forEach((element) {
+        for (var element in value.docs) {
           messages.add(element["message"]);
-        });
+        }
       }
     });
     setState(() {
