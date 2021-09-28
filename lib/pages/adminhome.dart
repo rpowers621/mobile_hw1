@@ -119,12 +119,13 @@ Future<void> addMessageToDB() async {
         .then((value) {
       if (value.size > 0 ) {
         for (var element in value.docs) {
-          messages.add(element["message"]);
+          setState(() {
+            messages.add(element["message"]);
+          }
+          );
         }
       }
     });
-    setState(() {
 
-    });
   }
 }
