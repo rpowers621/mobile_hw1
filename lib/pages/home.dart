@@ -66,11 +66,29 @@ class readMessages extends StatelessWidget {
 
 
   void _signOut(BuildContext context) async {
-    ScaffoldMessenger.of(context).clearSnackBars();
-    await _auth.signOut();
-    ScaffoldMessenger.of(context)
-        .showSnackBar(const SnackBar(content: Text('User logged out.')));
-    Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (con) => AppDriver()));
+    return showDialog(context: context,
+        builder: (context){
+      return AlertDialog(
+        content: SingleChildScrollView(
+          child: Text("Are you sure you'd like to log out?"),
+        ),
+        actions: <Widget>[
+          TextButton(
+          child: Text('Log out'),
+          onPressed: () async {
+          await _auth.signOut();
+          ScaffoldMessenger.of(context)
+              .showSnackBar(const SnackBar(content: Text('User logged out.')));
+          Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (con) => AppDriver()));
+          ScaffoldMessenger.of(context).clearSnackBars();
+          },
+          ),
+
+        ],
+      );
+    });
+
+
   }
 }

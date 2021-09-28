@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 final FirebaseFirestore _db = FirebaseFirestore.instance;
+String _inputText = '';
 
 class AdminHome extends StatefulWidget {
   AdminHome({Key? key}) : super(key: key);
@@ -17,13 +18,13 @@ class AdminHome extends StatefulWidget {
 
 
 class _AdminHomeState extends State<AdminHome> {
-  List<String> messages =[];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("Powers Fan Page"),
+          title: Text("Admin Home Page"),
+          backgroundColor: Colors.amberAccent,
           actions: <Widget>[
            FlatButton(
               onPressed: (){
@@ -35,41 +36,62 @@ class _AdminHomeState extends State<AdminHome> {
         ),
 
         backgroundColor: Colors.amberAccent,
-        body: Container( child: ListView.builder(
-            padding: const EdgeInsets.all(8),
-          itemCount: messages.length,
-          itemBuilder: (BuildContext context, int index){
-              return Container (
-              height: 50,
-               color: Colors.teal,
-               child: Center(child: Text('${messages[index]}')),
-              );
+        body: StreamBuilder(
+            stream: FirebaseFirestore.instance.collection('messages').snapshots(),
+            builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+              if (!snapshot.hasData) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
               }
+              return ListView(
+                children: snapshot.data!.docs.map((document) {
 
-        ),),
-        floatingActionButton: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-
-              FloatingActionButton(
-                onPressed: () {
-                  _signOut(context);
-                },
-                tooltip: 'Log out',
-                child: const Icon(Icons.lock),
-              ),
-            ]
-        )
+                  return Container(
+                    height: 50,
+                    padding: EdgeInsets.all(2.0),
+                    color: Colors.teal,
+                    child: Center(child: Text(document['message'])),
+                  );
+                }).toList(),
+              );
+            },
+        ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          _signOut(context);
+        },
+        tooltip: 'Log Out',
+        child: const Icon(Icons.logout),
+      ),
     );
   }
 
   void _signOut(BuildContext context) async {
-    ScaffoldMessenger.of(context).clearSnackBars();
-    await _auth.signOut();
-    ScaffoldMessenger.of(context)
-        .showSnackBar(const SnackBar(content: Text('User logged out.')));
-    Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (con) => AppDriver()));
+    return showDialog(context: context,
+        builder: (context){
+          return AlertDialog(
+            content: SingleChildScrollView(
+              child: Text("Are you sure you'd like to log out?"),
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: Text('Log out'),
+                onPressed: () async {
+                  await _auth.signOut();
+                  ScaffoldMessenger.of(context)
+                      .showSnackBar(const SnackBar(content: Text('User logged out.')));
+                  Navigator.pushReplacement(
+                      context, MaterialPageRoute(builder: (con) => AppDriver()));
+                  ScaffoldMessenger.of(context).clearSnackBars();
+                },
+              ),
+
+            ],
+          );
+        });
+
+
   }
 
 
@@ -105,27 +127,13 @@ Future<void> addMessageToDB() async {
         .collection("messages")
         .doc()
         .set({
-      "message": _textFieldController.text,
+      "message":  _textFieldController.text,
       "registration_deadline" : DateTime.now(),
 
     });
     setState(() {
-      readMessage();
+      _textFieldController.clear();
     });
 }
-  void readMessage() async {
-    FirebaseFirestore.instance.collection('messages')
-        .get()
-        .then((value) {
-      if (value.size > 0 ) {
-        for (var element in value.docs) {
-          setState(() {
-            messages.add(element["message"]);
-          }
-          );
-        }
-      }
-    });
 
-  }
 }
