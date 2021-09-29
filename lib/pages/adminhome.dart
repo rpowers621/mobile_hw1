@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 final FirebaseFirestore _db = FirebaseFirestore.instance;
-String _inputText = '';
+
 
 class AdminHome extends StatefulWidget {
   AdminHome({Key? key}) : super(key: key);
@@ -36,7 +36,8 @@ class _AdminHomeState extends State<AdminHome> {
         ),
 
         backgroundColor: Colors.amberAccent,
-        body: StreamBuilder(
+        body:
+        StreamBuilder(
             stream: FirebaseFirestore.instance.collection('messages').snapshots(),
             builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
               if (!snapshot.hasData) {
@@ -48,15 +49,20 @@ class _AdminHomeState extends State<AdminHome> {
                 children: snapshot.data!.docs.map((document) {
 
                   return Container(
-                    height: 50,
-                    padding: EdgeInsets.all(2.0),
-                    color: Colors.teal,
+                    height: 40,
+                    decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(30.0)),
+                      color: Colors.teal,
+                    ),
                     child: Center(child: Text(document['message'])),
+                    margin:EdgeInsets.all(5.0),
+
                   );
                 }).toList(),
               );
             },
         ),
+
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           _signOut(context);

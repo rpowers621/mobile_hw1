@@ -45,10 +45,14 @@ class readMessages extends StatelessWidget {
             children: snapshot.data!.docs.map((document) {
 
               return Container(
-                height: 50,
-                padding: EdgeInsets.all(2.0),
-                color: Colors.amberAccent,
-                child: Center(child: Text(document['message'])),
+                height: 40,
+                decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(30.0)),
+                    color: Colors.amberAccent,
+                ),
+                  child: Center(child: Text(document['message'])),
+                  margin:EdgeInsets.all(5.0),
+
               );
             }).toList(),
           );

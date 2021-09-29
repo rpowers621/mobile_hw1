@@ -58,10 +58,11 @@ class SignUpPage extends StatefulWidget {
           title: Text("Sign Up For Powers Fan Page"),
         ),
         backgroundColor: Colors.teal,
+        resizeToAvoidBottomInset: false,
         body: Form(
             key: _formKey,
             child: Column(children: [
-              const SizedBox(height: 6.0),
+              const SizedBox(height: 5.0),
               TextFormField(
                 autocorrect: false,
                 controller: _emailController,
@@ -77,7 +78,7 @@ class SignUpPage extends StatefulWidget {
                         borderRadius: BorderRadius.all(Radius.circular(10.0))),
                     hintText: 'Enter Email'),
               ),
-              const SizedBox(height: 6.0),
+              const SizedBox(height: 5.0),
               TextFormField(
                 autocorrect: false,
                 controller: _reEmailController,
@@ -93,7 +94,7 @@ class SignUpPage extends StatefulWidget {
                         borderRadius: BorderRadius.all(Radius.circular(10.0))),
                     hintText: 'Re-Enter Email'),
               ),
-              const SizedBox(height: 6.0),
+              const SizedBox(height: 5.0),
               TextFormField(
                 autocorrect: false,
                 controller: _passwordController,
@@ -109,7 +110,7 @@ class SignUpPage extends StatefulWidget {
                         borderRadius: BorderRadius.all(Radius.circular(10.0))),
                     hintText: 'Enter Password'),
               ),
-              const SizedBox(height:6.0),
+              const SizedBox(height:5.0),
               TextFormField(
                 autocorrect: false,
                 controller: _rePasswordController,
@@ -125,7 +126,7 @@ class SignUpPage extends StatefulWidget {
                         borderRadius: BorderRadius.all(Radius.circular(10.0))),
                     hintText: 'Verify Password'),
               ),
-              const SizedBox(height: 6.0),
+              const SizedBox(height: 5.0),
               TextFormField(
                 autocorrect: false,
                 controller: _firstnameController,
@@ -141,7 +142,7 @@ class SignUpPage extends StatefulWidget {
                         borderRadius: BorderRadius.all(Radius.circular(10.0))),
                     hintText: 'Enter Firstname'),
               ),
-              const SizedBox(height: 6.0),
+              const SizedBox(height: 5.0),
               TextFormField(
                 autocorrect: false,
                 controller: _lastnameController,
@@ -157,7 +158,6 @@ class SignUpPage extends StatefulWidget {
                         borderRadius: BorderRadius.all(Radius.circular(10.0))),
                     hintText: 'Enter Lastname'),
               ),
-              const SizedBox(height: 10.0),
               OutlinedButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
@@ -169,7 +169,9 @@ class SignUpPage extends StatefulWidget {
                     });
                   }
                 },
-                child: const Text('Submit'),
+                child: const Text('Submit',
+                    style: TextStyle(
+                        color: Colors.amberAccent)),
               )
             ])));
   }

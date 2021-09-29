@@ -3,8 +3,9 @@ import 'driver.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MyApp());
 }
 
@@ -65,17 +66,28 @@ Widget build(BuildContext context) {
 }
 }
 class Splash_info extends StatelessWidget {
+  get colors => null;
+
   @override
   Widget build(BuildContext context) {
     return SplashScreen(
       seconds: 7,
       navigateAfterSeconds:  AppDriver(),
-      title: new Text('Check Out Powers',  textScaleFactor: 2,),
-      image: new Image.asset("assets/Rachel_Headshot.JPG"),
-      loadingText: Text("Loading Powers"),
+      image: Image.asset("assets/Rachel_Headshot.JPG",
+        alignment: const Alignment(0.0,0.0)),
       photoSize: 100.0,
+      loadingText: Text("Loading Powers"),
+
       loaderColor: Colors.amberAccent,
-      backgroundColor: Colors.teal,
+      gradientBackground: const LinearGradient(
+        begin: Alignment.topCenter,
+        end: Alignment.bottomCenter,
+        colors: [
+          Colors.teal,
+          Colors.amberAccent,
+        ]
+      )
+
     );
   }
 }
