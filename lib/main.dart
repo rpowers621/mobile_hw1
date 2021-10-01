@@ -73,6 +73,7 @@ class Splash_info extends StatelessWidget {
     return SplashScreen(
       seconds: 7,
       navigateAfterSeconds:  AppDriver(),
+      title: Text("Powers Fan Pages"),
       image: Image.asset("assets/Rachel_Headshot.JPG",
         alignment: const Alignment(0.0,0.0)),
       photoSize: 100.0,
